@@ -3,6 +3,8 @@ FSDB = /home/synopsys/tools/verdi/W-2024.09/share/PLI/VCS/LINUX64
 IPS_FILELIST = $(PULP_PATH)/rtl/rtl_filelist.f
 work = work # Library name
 INC = +incdir+$(PULP_PATH)/rtl +incdir+$(PULP_PATH)/rtl/includes +incdir+$(PULP_PATH)/ips/adv_dbg_if/rtl +incdir+$(PULP_PATH)/ips/apb/apb_event_unit/include +incdir+$(PULP_PATH)/ips/apb/apb_i2c +incdir+$(PULP_PATH)/ips/riscv/include +incdir+$(PULP_PATH)/ips/axi/axi_node
+TB_FILELIST = $(PULP_PATH)/tb/tb_filelist.f
+TB_INC = +incdir+$(PULP_PATH)/tb
 VSIMOPT = -vopt -voptargs=+acc
 VSIMCOV = -cm line+cond+fsm+branch+tgl+assert
 ERROR = +error+20
@@ -23,8 +25,8 @@ help:
 
 # Compilation target
 sv_cmp:
-	vcs -l vcs_compile.log +define+FPU -timescale=1ns/1ps -sverilog -ntb_opts uvm -debug_access+all -full64 -kdb -lca -f $(IPS_FILELIST)  \
-	    -P $(FSDB)/novas.tab $(INC) $(FSDB)/pli.a $(VSIMCOV) $(ERROR) +define+VERILATOR  
+	vcs -l vcs_compile.log +define+FPU -timescale=1ns/1ps -sverilog -ntb_opts uvm -debug_access+all -full64 -kdb -lca -f $(IPS_FILELIST) -f $(TB_FILELIST)  \
+	    -P $(FSDB)/novas.tab $(INC) $(TB_INC) $(FSDB)/pli.a $(VSIMCOV) $(ERROR) +define+VERILATOR  
 
 # Generic test run target
 run_test:
